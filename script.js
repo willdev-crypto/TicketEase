@@ -1,1 +1,1 @@
-console.log('Aqui teste de console no navegador');
+console.log('Aqui teste de console no navegad e tudo funcionando ok');
