@@ -1,28 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Other page</title>
+<html lang="pt-BR">
+<head>
+    <title>Contato</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="script.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <nav>
-      <a href="/" aria-current="page">HOME</a>
-      <a href="/page2.html" aria-current="page">CONTATO</a>
+        <a href="/" aria-current="page">HOME</a>
+        <a href="/page2.html" aria-current="page">CONTATO</a>
     </nav>
     <main>
-      <h1>ABRA SEU CHAMADO</h1>
-      
+        <h1>ABRA SEU CHAMADO</h1>
+        
+        <!-- Formulário para cadastro de chamados -->
+        <form id="chamado-form">
+            <label for="cpf-cnpj">CPF ou CNPJ:</label>
+            <input type="text" id="cpf-cnpj" name="cpf-cnpj" required placeholder="Digite seu CPF (11 dígitos)" minlength="11" maxlength="11" />
+
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo" />
+
+            <label for="motivo">Motivo do Chamado:</label>
+            <select id="motivo" name="motivo" required>
+                <option value="">Selecione o motivo</option>
+                <option value="sistema-inoperante">Sistema Inoperante</option>
+                <option value="telefone-mudo">Telefone Mudo</option>
+                <option value="instalar-softphone-pc">Instalar Softphone no PC</option>
+                <option value="instalar-softphone-celular">Instalar Softphone no Celular</option>
+            </select>
+
+            <label for="email">Email para Contato:</label>
+            <input type="email" id="email" name="email" required placeholder="Digite seu email" />
+
+            <button type="submit">Enviar</button>
+        </form>
     </main>
+
     <footer class="sobre">
-      <ul class="redes-sociais">
-          <li><a href="#">Facebook</a></li>
-          <li><a href="https://www.linkedin.com/in/williamoliveiradev/">Linkedin</a></li>
-          <li><a href="./page2.html">News Letter</a></li>
-      </ul>
-      <p>FONEWEB &copy; 2024</p>
-     
-  </body>
+        <ul class="redes-sociais">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="https://www.linkedin.com/in/williamoliveiradev/">Linkedin</a></li>
+            <li><a href="./page2.html">News Letter</a></li>
+        </ul>
+        <p>FONEWEB &copy; 2024</p>
+    </footer>
+
+    <script>
+        // Função para validar o CPF e mostrar mensagem de sucesso
+        document.getElementById('chamado-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const cpfCnpjInput = document.getElementById('cpf-cnpj');
+            const cpfCnpjValue = cpfCnpjInput.value.trim();
+
+            // Verifica se o CPF tem exatamente 11 dígitos numéricos
+            if (cpfCnpjValue.length === 11 && /^[0-9]{11}$/.test(cpfCnpjValue)) {
+                alert("Seu Chamado Foi Registrado, Aguarde Retorno");
+                
+                // Redireciona para a página inicial após o alerta
+                window.location.href = "/";
+            } else {
+                alert("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+                cpfCnpjInput.focus();
+            }
+        });
+    </script>
+</body>
 </html>
