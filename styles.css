@@ -8,47 +8,40 @@ body {
   color: black;
   background-color: rgba(52, 61, 52, 0.712);
   image-rendering: auto;
-
-  /* Múltiplas imagens no fundo */
   background-image: url("./assets/fonefone.png"), url("./assets/fonefone.png");
-  background-size: auto 100%; /* Mantém a proporção das imagens e ajusta a altura */
-  background-position: 0 0; /* Posições iniciais das imagens */
-  background-repeat: repeat-x; /* Repete apenas horizontalmente */
-
-  /* Animação da esteira */
+  background-size: auto 100%;
+  background-position: 0 0;
+  background-repeat: repeat-x;
   animation: esteira 10s linear infinite;
 }
 
-/* Definindo a animação para o fundo */
 @keyframes esteira {
   from {
-      background-position: 0 0;
+    background-position: 0 0;
   }
   to {
-      background-position: -100% 0; /* Mova para a esquerda */
+    background-position: -100% 0;
   }
 }
 
-/* Animação para as letras */
 @keyframes move-text {
   from {
-      transform: translateX(0);
+    transform: translateX(0);
   }
   to {
-      transform: translateX(-10%); /* Move o texto para a esquerda */
+    transform: translateX(-10%);
   }
 }
 
-/* Animação para a cor do texto */
 @keyframes color-change {
   0% {
-      color: rgb(226, 73, 12); /* Laranja */
+    color: rgb(226, 73, 12);
   }
   50% {
-      color: white; /* Branco */
+    color: white;
   }
   100% {
-      color: rgb(226, 73, 12); /* Laranja */
+    color: rgb(226, 73, 12);
   }
 }
 
@@ -88,127 +81,190 @@ h1 {
   font-weight: bold;
   font-size: 8.0rem;
   margin-top: -10px;
-
-  /* Adicionando animação ao texto */
-  animation: move-text 10s linear infinite alternate, color-change 3s linear infinite; /* Animação de movimento e cor */
+  animation: move-text 10s linear infinite alternate, color-change 3s linear infinite;
 }
 
 h2 {
   text-align: right;
   font-weight: bold;
   font-size: 6.5rem;
-
-  /* Adicionando animação ao texto */
-  animation: move-text 10s linear infinite alternate, color-change 3s linear infinite; /* Animação de movimento e cor */
+  animation: move-text 10s linear infinite alternate, color-change 3s linear infinite;
 }
 
-/* Media Queries para tablets */
+/* Tablets em orientação horizontal */
 @media (max-width: 1024px) and (min-width: 768px) {
   h1 {
-      font-size: 4.5rem;
+    font-size: 4.5rem;
   }
 
   h2 {
-      font-size: 5rem;
+    font-size: 5rem;
   }
 
   nav a {
-      min-width: 7rem;
-      padding: 0.4rem;
+    min-width: 7rem;
+    padding: 0.4rem;
   }
 
   main {
-      padding: 0.8rem;
+    padding: 0.8rem;
   }
 
   body {
-      background-size: 85% auto; /* Ajusta para tablets */
+    background-size: 85% auto;
   }
 }
 
-/* Media Queries para dispositivos móveis */
-@media (max-width: 767px) {
+/* Dispositivos móveis grandes (ex. iPhone Plus, celulares grandes) */
+@media (max-width: 767px) and (min-width: 500px) {
   h1 {
-      font-size: 3rem;
-      margin-top: 0;
+    font-size: 3rem;
+    margin-top: 0;
   }
 
   h2 {
-      font-size: 3.5rem;
-      text-align: center;
+    font-size: 3.5rem;
+    text-align: center;
   }
 
   nav {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   nav a {
-      min-width: 100%;
-      padding: 0.8rem;
+    min-width: 100%;
+    padding: 0.8rem;
   }
 
   main {
-      padding: 0.5rem;
+    padding: 0.5rem;
   }
 
   body {
-      background-size: 100% auto; 
+    background-size: 100% auto;
   }
 }
 
-/* Estilo para o rodapé */
-footer {
-  text-align: center; /* Centraliza o texto dentro do rodapé */
-  padding: 1rem; /* Espaçamento interno */
-  background-color: rgba(255, 255, 255, 0.8); /* Fundo ligeiramente branco */
-  position: relative; /* Permite que o rodapé fique na parte inferior */
-  bottom: 0; /* Posiciona o rodapé na parte inferior */
-  width: 100%; /* Faz o rodapé ocupar toda a largura */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
+/* Dispositivos móveis pequenos (ex. iPhone SE, celulares pequenos) */
+@media (max-width: 499px) {
+  h1 {
+    font-size: 2.5rem;
+    margin-top: 0;
+  }
+
+  h2 {
+    font-size: 2.8rem;
+    text-align: center;
+  }
+
+  nav a {
+    min-width: 100%;
+    padding: 0.6rem;
+  }
+
+  main {
+    padding: 0.4rem;
+  }
+
+  body {
+    background-image: none; /* Oculta imagem para dispositivos menores */
+  }
+
+  footer {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
 }
 
-/* Estilo para a lista de redes sociais */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .redes-sociais {
-  list-style-type: none; 
-  padding: 0; 
-  margin: 0 0 1rem 0; 
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
 }
 
 .redes-sociais li {
-  display: inline; 
-  margin: 0 1rem; 
+  display: inline;
+  margin: 0 1rem;
 }
 
 .redes-sociais a {
-  text-decoration: none; 
-  color: #555; 
-  transition: color 0.3s;}
-
-.redes-sociais a:hover {
-  color: rgb(226, 73, 12); 
+  text-decoration: none;
+  color: #555;
+  transition: color 0.3s;
 }
 
+.redes-sociais a:hover {
+  color: rgb(226, 73, 12);
+}
 
 footer p {
-  margin: 0; 
-  color: black; 
+  margin: 0;
+  color: black;
 }
 
 html, body {
-  height: 100%; 
-  display: flex; 
-  flex-direction: column; 
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-  flex: 1; 
+  flex: 1;
 }
 
 footer {
-  
-  text-align: center; 
-  padding: 1rem; 
-  background-color: rgba(255, 255, 255, 0.8); 
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
-  width: 100%; 
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column; /* Organiza os elementos em coluna */
+  align-items: center; /* Centraliza o formulário horizontalmente */
+  max-width: 400px; /* Define uma largura máxima para o formulário */
+  margin: 0 auto; /* Centraliza o formulário na página */
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo leve para o formulário */
+  border-radius: 8px; /* Arredonda os cantos */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+}
+
+form label {
+  margin-top: 1rem;
+  width: 100%; /* Define a largura dos labels para o alinhamento */
+  text-align: left; /* Alinha o texto do label à esquerda */
+}
+
+form input,
+form select,
+form button {
+  width: 100%; /* Faz com que as caixas ocupem toda a largura do formulário */
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: rgb(226, 73, 12); /* Cor de fundo do botão */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: rgb(200, 60, 10); /* Efeito ao passar o mouse */
 }
