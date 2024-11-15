@@ -9,9 +9,9 @@ body {
   background-color: rgba(52, 61, 52, 0.712);
   image-rendering: auto;
   background-image: url("./assets/logo2.png"), url("./assets/logo2.png");
-  background-size: auto 100%;
-  background-position: 0 0;
-  background-repeat: repeat-x;
+  background-size: cover; /* Ajusta a imagem para cobrir toda a área visível */
+  background-position: center center; /* Garante que a imagem fique centralizada */
+  background-repeat: no-repeat; /* Impede repetição da imagem */
   animation: esteira 10s linear infinite;
 }
 
@@ -168,11 +168,6 @@ h2 {
 
   body {
     background-image: none; /* Oculta imagem para dispositivos menores */
-  }
-
-  footer {
-    padding: 0.5rem;
-    font-size: 0.8rem;
   }
 }
 
