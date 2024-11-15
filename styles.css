@@ -9,9 +9,9 @@ body {
   background-color: rgba(52, 61, 52, 0.712);
   image-rendering: auto;
   background-image: url("./assets/logo2.png");
-  background-size: cover; /* A imagem agora cobre todo o fundo */
-  background-position: center; /* A imagem ficará centralizada */
-  background-repeat: no-repeat; /* Não repetirá a imagem */
+  background-size: auto 100%; /* Ajusta o tamanho da imagem para que ela se ajuste ao fundo */
+  background-position: 0 0;
+  background-repeat: repeat-x; /* Faz a imagem repetir horizontalmente */
   animation: esteira 10s linear infinite;
 }
 
@@ -111,8 +111,8 @@ h2 {
   }
 
   body {
-    background-size: cover; /* Para tablets, manter a cobertura completa */
-    background-position: center center; /* Centraliza a imagem */
+    background-size: auto 100%; /* Mantém o tamanho das imagens */
+    background-position: 0 0; /* Alinha as imagens do fundo à esquerda */
   }
 }
 
@@ -142,8 +142,9 @@ h2 {
   }
 
   body {
-    background-size: cover; /* Manter a imagem coberta */
-    background-position: center center; /* Centralizar a imagem */
+    background-size: auto 100%; /* Ajuste para imagens de tamanho adequado */
+    background-repeat: repeat-x; /* Faz a imagem se repetir na horizontal */
+    background-position: 0 0; /* Inicia a posição à esquerda */
   }
 }
 
@@ -169,9 +170,11 @@ h2 {
   }
 
   body {
-    background-image: url("./assets/logo2.png"); /* Garantir a imagem de fundo */
-    background-size: cover; /* Garantir que a imagem ocupe a tela */
-    background-position: center; /* Centraliza a imagem */
+    background-image: url("./assets/logo2.png");
+    background-size: auto 100%; /* Imagem ajustada para o tamanho correto */
+    background-repeat: repeat-x; /* A imagem será repetida horizontalmente */
+    background-position: 0 0; /* A imagem começa na posição inicial */
+    animation: esteira 10s linear infinite; /* Animacao de esteira */
   }
 }
 
