@@ -8,10 +8,10 @@ body {
   color: black;
   background-color: rgba(52, 61, 52, 0.712);
   image-rendering: auto;
-  background-image: url("./assets/logo2.png"), url("./assets/logo2.png");
-  background-size: cover; /* Ajusta a imagem para cobrir toda a área visível */
-  background-position: center center; /* Garante que a imagem fique centralizada */
-  background-repeat: no-repeat; /* Impede repetição da imagem */
+  background-image: url("./assets/logo2.png");
+  background-size: cover; /* A imagem agora cobre todo o fundo */
+  background-position: center; /* A imagem ficará centralizada */
+  background-repeat: no-repeat; /* Não repetirá a imagem */
   animation: esteira 10s linear infinite;
 }
 
@@ -111,7 +111,8 @@ h2 {
   }
 
   body {
-    background-size: 85% auto;
+    background-size: cover; /* Para tablets, manter a cobertura completa */
+    background-position: center center; /* Centraliza a imagem */
   }
 }
 
@@ -141,7 +142,8 @@ h2 {
   }
 
   body {
-    background-size: 100% auto;
+    background-size: cover; /* Manter a imagem coberta */
+    background-position: center center; /* Centralizar a imagem */
   }
 }
 
@@ -167,7 +169,9 @@ h2 {
   }
 
   body {
-    background-image: none; /* Oculta imagem para dispositivos menores */
+    background-image: url("./assets/logo2.png"); /* Garantir a imagem de fundo */
+    background-size: cover; /* Garantir que a imagem ocupe a tela */
+    background-position: center; /* Centraliza a imagem */
   }
 }
 
