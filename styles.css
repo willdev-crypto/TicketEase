@@ -270,3 +270,51 @@ form button {
 form button:hover {
   background-color: rgb(200, 60, 10); /* Efeito ao passar o mouse */
 }
+
+/* Fonte do Título (h1) */
+h1 {
+  font-size: 3rem; /* Tamanho maior para destaque */
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: rgb(226, 73, 12); /* Cor laranja vibrante */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para destacar */
+}
+
+/* Fonte do Texto da Seção */
+main section {
+  font-size: 1.5rem; /* Texto maior */
+  line-height: 2; /* Espaçamento entre linhas */
+  text-align: justify; /* Justificação do texto */
+  color: white; /* Texto branco para contraste com o fundo */
+  font-style: italic; /* Estilo itálico */
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo semitransparente */
+  padding: 1.5rem; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Sombra leve no fundo */
+}
+
+/* Fonte da Lista de Serviços (ul li) */
+main section ul li {
+  font-size: 1.6rem; /* Maior que o texto padrão */
+  margin: 1rem 0; /* Espaço entre itens */
+  font-weight: bold; /* Negrito para destaque */
+  font-style: italic; /* Estilo itálico */
+  color: rgb(255, 215, 0); /* Amarelo dourado para destaque */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra para destaque */
+}
+
+
+h1.sobre-nos {
+  font-size: 3rem; /* Tamanho grande para destaque */
+  text-align: center; /* Centralizado no topo */
+  font-weight: bold; /* Negrito */
+  margin: 1rem 0; /* Espaçamento acima e abaixo */
+  color: rgb(226, 73, 12); /* Cor laranja vibrante */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para destaque */
+  position: sticky; /* Fixa o título no topo da tela */
+  top: 0; /* Fixa no topo da viewport */
+  background-color: rgba(255, 255, 255, 0.8); /* Fundo semitransparente para maior legibilidade */
+  padding: 1rem; /* Espaçamento interno */
+  z-index: 10; /* Garante que o título fique acima de outros elementos */
+}
