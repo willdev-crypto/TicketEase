@@ -318,3 +318,28 @@ h1.sobre-nos {
   padding: 1rem; /* Espaçamento interno */
   z-index: 10; /* Garante que o título fique acima de outros elementos */
 }
+ 
+/* Configurações para o contêiner do footer e imagens */
+.footer-container {
+  display: flex; /* Cria um layout flexível */
+  justify-content: space-between; /* Distribui os elementos entre as extremidades */
+  align-items: center; /* Alinha os itens verticalmente */
+  padding: 10px 20px; /* Espaçamento ao redor */
+}
+
+/* Link do lado esquerdo */
+#promo-left {
+  text-align: left;
+}
+
+/* Link do lado direito */
+#promo-right {
+  text-align: right;
+}
+
+/* Estilo para as imagens (opcional, para responsividade) */
+#promo-left img,
+#promo-right img {
+  max-width: 100%; /* Assegura que as imagens não ultrapassem o tamanho permitido */
+  height: auto; /* Mantém a proporção da imagem */
+}
