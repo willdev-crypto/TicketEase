@@ -53,7 +53,6 @@ Acesse a página **"Abra seu Chamado"** em [page2.html](./page2.html) e experime
 
 
 
-Se precisar de mais ajustes, é só avisar! 😊
 
 
 
