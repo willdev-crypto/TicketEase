@@ -16,10 +16,10 @@
     <main>
         <h1>ABRA SEU CHAMADO</h1>
         
-        <!-- Formulário para cadastro de chamados -->
+        <!-- Formulário para cadastro de chamados  aqui -->
         <form id="chamado-form">
             <fieldset>
-                <legend>Preencha seus dados</legend>
+                <legend>Preencha Seus Dados</legend>
                 
  <label for="cpf-cnpj">CPF ou CNPJ:</label>
 <input 
@@ -44,17 +44,18 @@
                 <select id="motivo" name="motivo" required>
                     <option value="">Selecione o motivo</option>
                     <option value="sistema-inoperante">Sistema Inoperante</option>
-                    <option value="telefone-mudo">Telefone Mudo</option>
+                    <option value="credenciais">Credenciais</option>
                     <option value="instalar-softphone-pc">Instalar Softphone no PC</option>
                     <option value="instalar-softphone-celular">Instalar Softphone no Celular</option>
-                    <option value="instalar-softphone-celular">Atualizar o Aplicativo</option>
-                    <option value="instalar-softphone-celular">BackLogs Completos</option>
-                    <option value="instalar-softphone-celular">Solicitar Orçamento</option>
-                    <option value="instalar-softphone-celular">Agendar Implantação</option>
-                    <option value="instalar-softphone-celular">Cancelar Contrato</option>
-                    <option value="instalar-softphone-celular">Renovação Contratual</option>
-                    <option value="instalar-softphone-celular">Licenças de Softwares</option>
+                    <option value="ip-bloqueado">IP Bloqueado</option>
+                    <option value="backlogs-completos">BackLogs Completos</option>
+                    <option value="solicitar-orcamento">Solicitar Orçamento</option>
+                    <option value="agendar-implantacao">Agendar Implantação</option>
+                    <option value="cancelar-contrato">Cancelar Contrato</option>
+                    <option value="renovacao-contratual">Renovação Contratual</option>
+                    <option value="licencas-softwares">Licenças de Softwares</option>
                 </select>
+                
 
                 <label for="email">Email para Contato:</label>
                 <input type="email" id="email" name="email" required placeholder="Digite seu email" autocomplete="email" />
@@ -94,10 +95,10 @@
             if (cpfCnpjValue.length === 11 && /^[0-9]{11}$/.test(cpfCnpjValue)) {
                 alert("Seu Chamado Foi Registrado, Aguarde Retorno");
                 
-                // Redireciona para a página inicial após o alerta
+                // Redireciona para a página inicial após o alerta 
                 window.location.href = "./";
             } else {
-                alert("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+                alert("CPF inválido. Deve conter 11 dígitos numéricos.");
                 cpfCnpjInput.focus();
             }
         });
