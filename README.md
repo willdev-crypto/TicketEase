@@ -45,10 +45,11 @@ Acesse a página **"Abra seu Chamado"** em [page2.html](./page2.html) e experime
 ```plaintext
 / 
 ├── index.html        # Página inicial
-├── page2.html        # Formulário de abertura de chamados
+├── aberturachamados.html        # Formulário de abertura de chamados
 ├── styles.css        # Estilo da aplicação
 ├── script.js         # Funcionalidades interativas
 └── assets/           # Imagens e outros recursos
+└── sobrenos/           # Imagens e outros recursos
 
 
 
