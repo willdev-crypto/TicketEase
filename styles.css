@@ -6,7 +6,7 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
   color: black;
-  background-color: rgba(52, 61, 52, 0.712);
+  background-color: rgba(181, 201, 181, 0.712);
   image-rendering: auto;
   background-image: url("./assets/logo2.png");
   background-size: auto 100%; /* Ajusta o tamanho da imagem para que ela se ajuste ao fundo */
