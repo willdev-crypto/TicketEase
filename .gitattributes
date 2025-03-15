@@ -1,0 +1,2 @@
+*.exe filter=lfs diff=lfs merge=lfs -text
+<path_to_large_file> filter=lfs diff=lfs merge=lfs -text
