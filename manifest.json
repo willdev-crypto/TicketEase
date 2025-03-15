@@ -1,0 +1,22 @@
+{
+    "name": "TicketEase",
+    "short_name": "TicketEase",
+    "description": "Um aplicativo web convertido para PWA.",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0000ff",
+    "icons": [
+      {
+        "src": "assets/web-app-manifest-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "assets/web-app-manifest-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

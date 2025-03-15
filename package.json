@@ -1,8 +1,31 @@
 {
+  "name": "ticketease",
+  "version": "1.0.0",
+  "description": "Aplicativo PWA para gerenciar chamados",
+  "main": "main.js",
   "scripts": {
-    "start": "servor --reload"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "dependencies": {
-    "servor": "^4.0.2"
+    
+  },
+  "devDependencies": {
+    "electron": "^35.0.1",
+    "electron-builder": "^23.1.0"
+  },
+  "build": {
+    "appId": "com.ticketease.app",
+    "productName": "TicketEase",
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
