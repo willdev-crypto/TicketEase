@@ -6,14 +6,13 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
-  },
-  "dependencies": {
-    
+    "dist": "electron-builder",
+    "deploy": "electron-builder --publish to=github"
   },
   "devDependencies": {
     "electron": "^35.0.1",
-    "electron-builder": "^23.1.0"
+    "electron-builder": "^23.1.0",
+    "electron-updater": "^6.1.8"
   },
   "build": {
     "appId": "com.ticketease.app",
@@ -26,6 +25,13 @@
     },
     "linux": {
       "target": "AppImage"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "willdev-crypto",
+        "repo": "TicketEase"
+      }
+    ]
   }
 }
