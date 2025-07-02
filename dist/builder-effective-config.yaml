@@ -1,0 +1,13 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.ticketease.app
+productName: TicketEase
+win:
+  target: nsis
+mac:
+  target: dmg
+linux:
+  target: AppImage
+files: []
+electronVersion: 35.0.1

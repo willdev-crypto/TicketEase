@@ -1,0 +1,8 @@
+version: 1.0.0
+files:
+  - url: TicketEase-Setup-1.0.0.exe
+    sha512: oskMLhvZs8qEKNKhi+B3GAf2DF+4ih7i8dr8VXgatFDUx45Wvjl5uP40Zpf2m/+ZSW/OekSYmqxYGX054xPInw==
+    size: 86545608
+path: TicketEase-Setup-1.0.0.exe
+sha512: oskMLhvZs8qEKNKhi+B3GAf2DF+4ih7i8dr8VXgatFDUx45Wvjl5uP40Zpf2m/+ZSW/OekSYmqxYGX054xPInw==
+releaseDate: '2025-07-02T16:29:13.003Z'

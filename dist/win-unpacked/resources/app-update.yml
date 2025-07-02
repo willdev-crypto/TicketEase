@@ -1,0 +1,4 @@
+owner: willdev-crypto
+repo: TicketEase
+provider: github
+updaterCacheDirName: ticketease-updater
