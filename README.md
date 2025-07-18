@@ -61,18 +61,9 @@ Acesse a página **"Abra seu Chamado"** em [aberturachamados.html](./aberturacha
 └── sobrenos.html             # Página sobre nós
 ```
 
----
 
-## 📦 Build & Releases
 
-- Para gerar uma nova versão desktop, aumente o campo `"version"` no `package.json` e utilize os scripts de build (`npm run dist`).
-- Releases são publicados automaticamente no GitHub (ver configuração em `package.json`).
 
----
-
-## 📄 Licença
-
-Este projeto é open-source e está licenciado sob a [MIT License](./LICENSE). Sinta-se à vontade para usar, modificar e distribuir o código conforme suas necessidades.
 
 
 
