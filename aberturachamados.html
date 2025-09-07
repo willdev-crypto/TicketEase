@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <title>Contato</title>
+    <title>Abertura de Chamados</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
 </head>
 <body>
     <nav>
-        <a href="./index.html" aria-current="page">HOME</a>
-        <a href="./aberturachamados.html" aria-current="page">CONTATO</a>
+        <a href="index.html">HOME</a>
+        <a href="aberturachamados.html" aria-current="page">ABRIR CHAMADO</a>
+        <a href="login.html">LOGIN / CADASTRE-SE</a>
     </nav>
-    
     <main>
         <h1>ABRA SEU CHAMADO</h1>
         
@@ -43,19 +42,29 @@
                 <label for="motivo">Motivo do Chamado:</label>
                 <select id="motivo" name="motivo" required>
                     <option value="">Selecione o motivo</option>
-                    <option value="sistema-inoperante">Sistema Inoperante</option>
-                    <option value="credenciais">Credenciais</option>
-                    <option value="instalar-softphone-pc">Instalar Softphone no PC</option>
-                    <option value="instalar-softphone-celular">Instalar Softphone no Celular</option>
-                    <option value="ip-bloqueado">IP Bloqueado</option>
-                    <option value="backlogs-completos">BackLogs Completos</option>
-                    <option value="solicitar-orcamento">Solicitar Orçamento</option>
-                    <option value="agendar-implantacao">Agendar Implantação</option>
-                    <option value="cancelar-contrato">Cancelar Contrato</option>
-                    <option value="renovacao-contratual">Renovação Contratual</option>
-                    <option value="licencas-softwares">Licenças de Softwares</option>
+                    <option value="instalar-windows">Instalar Windows sem requisitos obrigatórios 11</option>
+                    <option value="manutencao-limpeza">Manutenção e limpeza no sistema</option>
+                    <option value="recuperacao-sistema">Recuperação de sistema</option>
+                    <option value="configuracao-rede">Configuração de rede Access Point</option>
+                    <option value="servico-30min">Serviços de até 30 minutos</option>
+                    <option value="pecas">Peças (a verificar preço)</option>
+                    <option value="licencas-softwares">Licenças de softwares</option>
+                    <option value="solicitar-orcamento">Solicitar orçamento</option>
                 </select>
-                
+                <div id="orcamento-extra" style="display:none;">
+    <label for="orcamento-detalhes">Descreva o que necessita:</label>
+    <textarea id="orcamento-detalhes" name="orcamento-detalhes" rows="2"></textarea>
+</div>
+<div id="valor-servico" style="margin-top:10px; font-weight:bold;"></div>
+<button type="button" id="adicionar-servico">Adicionar Serviço</button>
+<ul id="servicos-adicionados"></ul>
+<div id="cupom-container" style="display:none; margin-top:10px;">
+    <label for="cupom">Possui cupom de desconto?</label>
+    <input type="text" id="cupom" name="cupom" placeholder="Digite o cupom">
+    <button type="button" id="aplicar-cupom">Aplicar Cupom</button>
+    <span id="cupom-msg" style="color:green; font-weight:bold;"></span>
+</div>
+<div id="resumo-servicos" style="margin-top:10px; font-weight:bold;"></div>
                 
 <label for="descricao">Descrição do Chamado:</label>
 <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva o problema ou solicitação"></textarea>
@@ -106,6 +115,157 @@
                 cpfCnpjInput.focus();
             }
         });
+    </script>
+    <script>
+const motivosValores = {
+    "instalar-windows": 160,
+    "manutencao-limpeza": 130,
+    "recuperacao-sistema": 160,
+    "configuracao-rede": 130,
+    "servico-30min": 0,
+    "pecas": "A verificar",
+    "licencas-softwares": "A verificar",
+    "solicitar-orcamento": "A combinar"
+};
+
+let servicosSelecionados = [];
+
+document.getElementById('motivo').addEventListener('change', function() {
+    const motivo = this.value;
+    let valor = motivosValores[motivo];
+    let texto = "";
+    if (motivo === "manutencao-limpeza" || motivo === "recuperacao-sistema" || motivo === "configuracao-rede") {
+        texto = `Valor: R$ ${valor},00 por hora`;
+    } else if (motivo === "instalar-windows") {
+        texto = `Valor: R$ ${valor},00`;
+    } else if (motivo === "servico-30min") {
+        texto = `Serviço gratuito até 30 minutos.`;
+    } else if (motivo === "pecas" || motivo === "licencas-softwares") {
+        texto = `Valor: ${valor}`;
+    } else if (motivo === "solicitar-orcamento") {
+        texto = `Valor: ${valor}`;
+        document.getElementById('orcamento-extra').style.display = 'block';
+    } else {
+        document.getElementById('orcamento-extra').style.display = 'none';
+    }
+    document.getElementById('valor-servico').innerText = texto;
+    if (motivo !== "solicitar-orcamento") {
+        document.getElementById('orcamento-extra').style.display = 'none';
+    }
+});
+
+document.getElementById('adicionar-servico').addEventListener('click', function() {
+    const motivoSelect = document.getElementById('motivo');
+    const motivo = motivoSelect.value;
+    if (!motivo) return alert("Selecione um motivo!");
+    let valor = motivosValores[motivo];
+    let descricao = motivoSelect.options[motivoSelect.selectedIndex].text;
+    if (motivo === "solicitar-orcamento") {
+        descricao += " - " + document.getElementById('orcamento-detalhes').value;
+    }
+    servicosSelecionados.push({ motivo, descricao, valor });
+    atualizarListaServicos();
+    motivoSelect.value = "";
+    document.getElementById('valor-servico').innerText = "";
+    document.getElementById('orcamento-extra').style.display = 'none';
+});
+
+let desconto = 0;
+
+function atualizarListaServicos() {
+    const ul = document.getElementById('servicos-adicionados');
+    ul.innerHTML = "";
+    let total = 0;
+    servicosSelecionados.forEach((serv, idx) => {
+        let valorTexto = (typeof serv.valor === "number") ? `R$ ${serv.valor},00` : serv.valor;
+        ul.innerHTML += `<li>${serv.descricao} - ${valorTexto} <button type="button" onclick="removerServico(${idx})">Remover</button></li>`;
+        if (typeof serv.valor === "number") total += serv.valor;
+    });
+    // Exibe campo de cupom se houver serviços
+    document.getElementById('cupom-container').style.display = servicosSelecionados.length > 0 ? 'block' : 'none';
+    let totalComDesconto = total - (total * desconto);
+    document.getElementById('resumo-servicos').innerText = desconto > 0 ? 
+        `Total com desconto: R$ ${totalComDesconto.toFixed(2)}` : 
+        `Total: R$ ${total},00`;
+}
+
+window.removerServico = function(idx) {
+    servicosSelecionados.splice(idx, 1);
+    atualizarListaServicos();
+}
+
+document.getElementById('aplicar-cupom').addEventListener('click', function() {
+    const cupom = document.getElementById('cupom').value.trim().toUpperCase();
+    let msg = "";
+    if (cupom === "ASSINANTE20") {
+        desconto = 0.20;
+        msg = "Cupom de 20% aplicado!";
+    } else if (cupom === "FIDELIDADE30") {
+        desconto = 0.30;
+        msg = "Cupom de 30% aplicado!";
+    } else if (cupom === "CYBERVIP50") {
+        desconto = 0.50;
+        msg = "Cupom de 50% aplicado!";
+    } else if (cupom === "") {
+        desconto = 0;
+        msg = "";
+    } else {
+        desconto = 0;
+        msg = "Cupom inválido!";
+    }
+    document.getElementById('cupom-msg').innerText = msg;
+    atualizarListaServicos();
+});
+    </script>
+    <script>
+        // Função para validar o CPF e mostrar mensagem de sucesso
+        document.getElementById('chamado-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+    if (servicosSelecionados.length === 0) {
+        alert("Adicione pelo menos um serviço!");
+        return;
+    }
+    // Remova a verificação de login
+    // Salve chamado como anônimo se não houver usuário logado
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+    const data = new Date();
+    let chamado = {
+        servicos: [...servicosSelecionados],
+        descricao: document.getElementById('descricao').value,
+        data: data.toLocaleDateString(),
+        hora: data.toLocaleTimeString(),
+        usuario: usuarioLogado ? usuarioLogado.email : "anônimo"
+    };
+    // Salva chamados anônimos em localStorage
+    let chamados = JSON.parse(localStorage.getItem("chamados_anonimos") || "[]");
+    chamados.push(chamado);
+    localStorage.setItem("chamados_anonimos", JSON.stringify(chamados));
+    alert("Chamado registrado com sucesso!");
+    servicosSelecionados = [];
+    atualizarListaServicos();
+    this.reset();
+    document.getElementById('valor-servico').innerText = "";
+    document.getElementById('orcamento-extra').style.display = 'none';
+});
+    </script>
+    <script>
+let tempoInatividade = 20 * 60 * 1000; // 20 minutos em ms
+let timerLogout;
+
+function resetTimer() {
+    clearTimeout(timerLogout);
+    timerLogout = setTimeout(() => {
+        alert("Sessão expirada por inatividade.");
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = "login.html";
+    }, tempoInatividade);
+}
+
+window.onload = resetTimer;
+document.onmousemove = resetTimer;
+document.onkeypress = resetTimer;
+document.onclick = resetTimer;
+document.onscroll = resetTimer;
     </script>
 </body>
 </html>

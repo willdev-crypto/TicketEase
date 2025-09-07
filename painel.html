@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Painel - TicketEase</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <a href="./index.html">HOME</a>
+        <a href="./aberturachamados.html">ABRIR CHAMADO</a>
+        <a href="./login.html">LOGIN</a>
+        <a href="./painel.html" aria-current="page">PAINEL</a>
+    </nav>
+    <main>
+        <div class="painel-container">
+            <div class="painel-header" style="margin-bottom:20px;">
+                <span id="usuario-logado-info"></span>
+                <button onclick="logout()" style="float:right;">Sair</button>
+            </div>
+            <div id="filtros-admin" style="display:none; margin-bottom:20px;">
+                <label>Email: <input type="text" id="filtro-email"></label>
+                <label>CPF: <input type="text" id="filtro-cpf"></label>
+                <label>Data: <input type="date" id="filtro-data"></label>
+                <button onclick="filtrarUsuarios()">Filtrar</button>
+                <button onclick="exportarCSV()">Exportar para Planilha</button>
+            </div>
+            <div id="painel-content"></div>
+        </div>
+    </main>
+    <script>
+        function getUsuarios() {
+            return JSON.parse(localStorage.getItem("usuarios") || "[]");
+        }
+        function getUsuarioLogado() {
+            return JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+        }
+        function logout() {
+            localStorage.removeItem("usuarioLogado");
+            window.location.href = "login.html";
+        }
+        function renderPainel(filtro = {}) {
+            const usuario = getUsuarioLogado();
+            document.getElementById("usuario-logado-info").innerText = usuario ? `Bem-vindo(a), ${usuario.nome || usuario.email}` : "";
+            const painel = document.getElementById("painel-content");
+            if (!usuario) {
+                painel.innerHTML = "<p>Faça login para acessar o painel.</p>";
+                return;
+            }
+            if (usuario.admin) {
+                document.getElementById("filtros-admin").style.display = "block";
+                let usuarios = getUsuarios();
+                // Filtros
+                if (filtro.email) usuarios = usuarios.filter(u => u.email.includes(filtro.email));
+                if (filtro.cpf) usuarios = usuarios.filter(u => u.cpf.includes(filtro.cpf));
+                if (filtro.data) {
+                    usuarios = usuarios.map(u => ({
+                        ...u,
+                        chamados: u.chamados ? u.chamados.filter(c => c.data === filtro.data) : []
+                    }));
+                }
+                let html = "<h2>Usuários cadastrados</h2>";
+                usuarios.forEach(u => {
+                    html += `<div style="margin-bottom:20px; border:1px solid #ccc; padding:10px;">
+                        <strong>Email:</strong> ${u.email}<br>
+                        <strong>CPF:</strong> ${u.cpf}<br>
+                        <strong>Senha:</strong> ${u.senha}<br>
+                        <strong>Chamados:</strong>
+                        <ul>
+                            ${u.chamados && u.chamados.length ? u.chamados.map(c => `<li>${c.data} ${c.hora} - ${c.motivo}: ${c.descricao}</li>`).join("") : "<li>Nenhum chamado</li>"}
+                        </ul>
+                        <button onclick="exportarCliente('${u.email}')">Exportar dados deste cliente</button>
+                    </div>`;
+                });
+                let chamadosAnonimos = JSON.parse(localStorage.getItem("chamados_anonimos") || "[]");
+                if (chamadosAnonimos.length) {
+                    html += `<h2>Chamados Anônimos</h2><ul>`;
+                    chamadosAnonimos.forEach(c => {
+                        html += `<li>
+                            <strong>Data:</strong> ${c.data} ${c.hora}<br>
+                            <strong>Serviços:</strong> ${c.servicos.map(s => s.descricao).join(", ")}<br>
+                            <strong>Descrição:</strong> ${c.descricao}
+                        </li>`;
+                    });
+                    html += `</ul>`;
+                }
+                painel.innerHTML = html;
+            } else {
+                let usuarios = getUsuarios();
+                let usuarioAtual = usuarios.find(u => u.email === usuario.email && u.cpf === usuario.cpf);
+                let chamados = usuarioAtual ? usuarioAtual.chamados : [];
+                let html = "<h2>Meus Chamados</h2>";
+                html += `<ul>${chamados && chamados.length ? chamados.map(c => `<li>${c.data} ${c.hora} - ${c.motivo}: ${c.descricao}</li>`).join("") : "<li>Nenhum chamado</li>"}</ul>`;
+                painel.innerHTML = html;
+                document.getElementById("filtros-admin").style.display = "none";
+            }
+        }
+        function filtrarUsuarios() {
+            const email = document.getElementById("filtro-email").value.trim().toLowerCase();
+            const cpf = document.getElementById("filtro-cpf").value.trim();
+            const data = document.getElementById("filtro-data").value;
+            renderPainel({ email, cpf, data });
+        }
+        function exportarCliente(email) {
+            const usuarios = getUsuarios();
+            const usuario = usuarios.find(u => u.email === email);
+            if (!usuario) return;
+            let csv = "Email,CPF,Senha,Data,Hora,Motivo,Descrição\n";
+            if (usuario.chamados && usuario.chamados.length) {
+                usuario.chamados.forEach(c => {
+                    csv += `"${usuario.email}","${usuario.cpf}","${usuario.senha}","${c.data}","${c.hora}","${c.motivo}","${c.descricao}"\n`;
+                });
+            } else {
+                csv += `"${usuario.email}","${usuario.cpf}","${usuario.senha}","","","",""\n`;
+            }
+            const blob = new Blob([csv], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `dados_${usuario.email}.csv`;
+            link.click();
+        }
+        function exportarCSV() {
+            const usuarios = getUsuarios();
+            let csv = "Email,CPF,Senha,Data,Hora,Motivo,Descrição\n";
+            usuarios.forEach(u => {
+                if (u.chamados && u.chamados.length) {
+                    u.chamados.forEach(c => {
+                        csv += `"${u.email}","${u.cpf}","${u.senha}","${c.data}","${c.hora}","${c.motivo}","${c.descricao}"\n`;
+                    });
+                } else {
+                    csv += `"${u.email}","${u.cpf}","${u.senha}","","","",""\n`;
+                }
+            });
+            const blob = new Blob([csv], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "usuarios_ticketease.csv";
+            link.click();
+        }
+        function editarDadosUsuario() {
+            const usuario = getUsuarioLogado();
+            let usuarios = getUsuarios();
+            let usuarioAtual = usuarios.find(u => u.email === usuario.email && u.cpf === usuario.cpf);
+            const novoEmail = document.getElementById("novo-email").value.trim().toLowerCase();
+            const novaSenha = document.getElementById("nova-senha").value;
+            if (novoEmail && novoEmail !== usuarioAtual.email) {
+                if (usuarios.some(u => u.email === novoEmail)) {
+                    document.getElementById("editar-msg").innerText = "Email já cadastrado!";
+                    return;
+                }
+                usuarioAtual.email = novoEmail;
+                usuario.email = novoEmail;
+                localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+            }
+            if (novaSenha && novaSenha !== usuarioAtual.senha) {
+                usuarioAtual.senha = novaSenha;
+            }
+            setUsuarios(usuarios);
+            document.getElementById("editar-msg").innerText = "Dados atualizados!";
+            renderPainel();
+        }
+        let tempoInatividade = 20 * 60 * 1000; // 20 minutos em ms
+        let timerLogout;
+
+        function resetTimer() {
+            clearTimeout(timerLogout);
+            timerLogout = setTimeout(() => {
+                alert("Sessão expirada por inatividade.");
+                localStorage.removeItem("usuarioLogado");
+                window.location.href = "login.html";
+            }, tempoInatividade);
+        }
+
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        document.onclick = resetTimer;
+        document.onscroll = resetTimer;
+
+        renderPainel();
+    </script>
+</body>
+</html>

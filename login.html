@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Login / Cadastro - TicketEase</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <a href="./index.html">HOME</a>
+        <a href="./aberturachamados.html">ABRIR CHAMADO</a>
+        <a href="./login.html" aria-current="page">LOGIN / CADASTRE-SE</a>
+    </nav>
+    <main>
+        <div class="login-container">
+            <h1>Login</h1>
+            <form id="login-form">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" required />
+                <label for="login-cpf">CPF:</label>
+                <input type="text" id="login-cpf" required maxlength="11" pattern="\d{11}" />
+                <label for="login-senha">Senha:</label>
+                <input type="password" id="login-senha" required minlength="6" />
+                <button type="submit">Login</button>
+            </form>
+            <button id="abrir-cadastro" style="margin-top:10px;">Cadastrar</button>
+            <button type="button" id="btn-esqueci" style="margin-top:10px;">Esqueci minha senha</button>
+            <div id="login-msg" style="color:red; margin-top:10px;"></div>
+        </div>
+        <div class="login-container" id="cadastro-container" style="display:none;">
+            <h1>Cadastro</h1>
+            <form id="cadastro-form">
+                <label for="cad-nome">Nome:</label>
+                <input type="text" id="cad-nome" required />
+                <label for="cad-email">Email:</label>
+                <input type="email" id="cad-email" required />
+                <label for="cad-telefone">Telefone/WhatsApp:</label>
+                <input type="text" id="cad-telefone" required />
+                <label for="cad-cpf">CPF:</label>
+                <input type="text" id="cad-cpf" required maxlength="11" pattern="\d{11}" />
+                <label for="cad-senha">Senha:</label>
+                <input type="password" id="cad-senha" required minlength="6" />
+                <button type="submit">Cadastrar</button>
+                <button type="button" id="voltar-login" style="margin-top:10px;">Voltar ao Login</button>
+            </form>
+            <div id="cadastro-msg" style="color:red; margin-top:10px;"></div>
+        </div>
+    </main>
+    <script>
+        function getUsuarios() {
+            return JSON.parse(localStorage.getItem("usuarios") || "[]");
+        }
+        function setUsuarios(usuarios) {
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        }
+        // Alterna entre login e cadastro
+        document.getElementById("abrir-cadastro").onclick = function() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("abrir-cadastro").style.display = "none";
+            document.getElementById("cadastro-container").style.display = "flex";
+        };
+        document.getElementById("voltar-login").onclick = function() {
+            document.getElementById("login-form").style.display = "block";
+            document.getElementById("abrir-cadastro").style.display = "inline-block";
+            document.getElementById("cadastro-container").style.display = "none";
+        };
+        // Cadastro
+        document.getElementById("cadastro-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const nome = document.getElementById("cad-nome").value.trim();
+            const email = document.getElementById("cad-email").value.trim().toLowerCase();
+            const telefone = document.getElementById("cad-telefone").value.trim();
+            const cpf = document.getElementById("cad-cpf").value.trim();
+            const senha = document.getElementById("cad-senha").value;
+            let usuarios = getUsuarios();
+            if (usuarios.some(u => u.email === email || u.cpf === cpf)) {
+                alert("USUÁRIO JÁ CADASTRADO");
+                return;
+            }
+            usuarios.push({ nome, email, telefone, cpf, senha, chamados: [] });
+            setUsuarios(usuarios);
+            alert("USUÁRIO CADASTRADO!");
+            document.getElementById("cadastro-form").reset();
+            document.getElementById("voltar-login").click();
+        });
+        // Login
+        document.getElementById("login-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value.trim().toLowerCase();
+            const cpf = document.getElementById("login-cpf").value.trim();
+            const senha = document.getElementById("login-senha").value;
+            if (email === "wil.dgl@hotmail.com" && cpf === "39666162680" && senha === "614013") {
+                localStorage.setItem("usuarioLogado", JSON.stringify({ nome: "Administrador", email, cpf, admin: true }));
+                window.location.href = "painel.html";
+                return;
+            }
+            let usuarios = getUsuarios();
+            let usuario = usuarios.find(u => u.email === email && u.cpf === cpf);
+            if (!usuario) {
+                document.getElementById("login-msg").innerText = "Usuário não encontrado!";
+                return;
+            }
+            if (usuario.senha !== senha) {
+                document.getElementById("login-msg").innerText = "Senha incorreta!";
+                return;
+            }
+            localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuario.nome, email, cpf, admin: false }));
+            window.location.href = "painel.html";
+        });
+        document.getElementById("btn-esqueci").addEventListener("click", function() {
+            alert("Em breve você poderá redefinir sua senha por email.");
+        });
+    </script>
+</body>
+</html>
