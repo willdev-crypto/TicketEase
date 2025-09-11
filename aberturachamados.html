@@ -42,14 +42,13 @@
                 <label for="motivo">Motivo do Chamado:</label>
                 <select id="motivo" name="motivo" required>
                     <option value="">Selecione o motivo</option>
-                    <option value="instalar-windows">Instalar Windows sem requisitos obrigatórios 11</option>
-                    <option value="manutencao-limpeza">Manutenção e limpeza no sistema</option>
-                    <option value="recuperacao-sistema">Recuperação de sistema</option>
-                    <option value="configuracao-rede">Configuração de rede Access Point</option>
-                    <option value="servico-30min">Serviços de até 30 minutos</option>
-                    <option value="pecas">Peças (a verificar preço)</option>
-                    <option value="licencas-softwares">Licenças de softwares</option>
-                    <option value="solicitar-orcamento">Solicitar orçamento</option>
+                    <option value="manutencao-computadores">Manutenção de Computadores (Hardware/Software)</option>
+                    <option value="instalacao-windows">Instalação/Recuperação de Sistema Windows</option>
+                    <option value="redes-servidores">Redes e Servidores</option>
+                    <option value="licencas-software">Licenças de Software</option>
+                    <option value="gestao-projetos">Gestão de Projetos</option>
+                    <option value="contratos-inteligentes">Contratos Inteligentes</option>
+                    <option value="pecas-orcamentos">Peças e Orçamentos</option>
                 </select>
                 <div id="orcamento-extra" style="display:none;">
     <label for="orcamento-detalhes">Descreva o que necessita:</label>
@@ -118,14 +117,13 @@
     </script>
     <script>
 const motivosValores = {
-    "instalar-windows": 160,
-    "manutencao-limpeza": 130,
-    "recuperacao-sistema": 160,
-    "configuracao-rede": 130,
-    "servico-30min": 0,
-    "pecas": "A verificar",
-    "licencas-softwares": "A verificar",
-    "solicitar-orcamento": "A combinar"
+    "manutencao-computadores": 130,
+    "instalacao-windows": 160,
+    "redes-servidores": 130,
+    "licencas-software": "A verificar",
+    "gestao-projetos": "A combinar",
+    "contratos-inteligentes": "A combinar",
+    "pecas-orcamentos": "A combinar"
 };
 
 let servicosSelecionados = [];
@@ -134,24 +132,22 @@ document.getElementById('motivo').addEventListener('change', function() {
     const motivo = this.value;
     let valor = motivosValores[motivo];
     let texto = "";
-    if (motivo === "manutencao-limpeza" || motivo === "recuperacao-sistema" || motivo === "configuracao-rede") {
+    if (motivo === "manutencao-computadores" || motivo === "redes-servidores") {
         texto = `Valor: R$ ${valor},00 por hora`;
-    } else if (motivo === "instalar-windows") {
+    } else if (motivo === "instalacao-windows") {
         texto = `Valor: R$ ${valor},00`;
-    } else if (motivo === "servico-30min") {
-        texto = `Serviço gratuito até 30 minutos.`;
-    } else if (motivo === "pecas" || motivo === "licencas-softwares") {
+    } else if (typeof valor === 'string') {
         texto = `Valor: ${valor}`;
-    } else if (motivo === "solicitar-orcamento") {
-        texto = `Valor: ${valor}`;
+    }
+    
+    // Lógica para o campo de orçamento
+    if (motivo === "pecas-orcamentos") {
         document.getElementById('orcamento-extra').style.display = 'block';
     } else {
         document.getElementById('orcamento-extra').style.display = 'none';
     }
+
     document.getElementById('valor-servico').innerText = texto;
-    if (motivo !== "solicitar-orcamento") {
-        document.getElementById('orcamento-extra').style.display = 'none';
-    }
 });
 
 document.getElementById('adicionar-servico').addEventListener('click', function() {

@@ -388,3 +388,44 @@ h1.sobre-nos {
     margin: 40px auto;
     padding: 32px 24px;
 }
+
+/* Estilo para a nova seção "Sobre Nós" na página inicial */
+.sobre-nos-home {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: justify;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+  max-width: 900px;
+}
+
+.sobre-nos-home p {
+  margin-bottom: 1.5rem;
+}
+
+.sobre-nos-home ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sobre-nos-home ul li {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+  font-weight: normal;
+  font-style: normal;
+  color: #fff;
+  text-shadow: none;
+}
+
+.sobre-nos-home ul li strong {
+  color: rgb(255, 215, 0); /* Amarelo dourado para destaque */
+}
+
+/* Ajuste no link "Sobre Nós" do rodapé */
+footer .redes-sociais a[href*="sobrenos.html"] {
+    display: none; /* Esconde o link, já que o conteúdo está na home */
+}

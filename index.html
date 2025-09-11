@@ -1,55 +1,90 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
     <title>Home</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="styles.css" />
     <script type="module" src="script.js"></script>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-eval';"
+    />
+    <link rel="manifest" href="manifest.json" />
+  </head>
+  <body>
     <nav>
-        <a href="index.html">HOME</a>
-        <a href="aberturachamados.html">ABRIR CHAMADO</a>
-        <a href="login.html">LOGIN / CADASTRE-SE</a>
+      <a href="index.html" aria-current="page">HOME</a>
+      <a href="aberturachamados.html">ABRIR CHAMADO</a>
+      <a href="login.html">LOGIN / CADASTRE-SE</a>
     </nav>
-
     <main>
-        <h1>TicketEase</h1>
-        <h2>Bem-vindo!</h2>
+      <section class="sobre-nos-home">
+        <p>
+          Bem-vindo à <strong>TicketEase</strong>, sua solução completa em
+          suporte técnico. Somos especialistas em oferecer serviços de alta
+          qualidade nas seguintes áreas:
+        </p>
+        <ul>
+          <li>
+            🖥️ <strong>Manutenção de Computadores:</strong> Hardware, software,
+            recuperação de sistema e instalação de Windows.
+          </li>
+
+          <li>
+            🌐 <strong>Redes e Servidores:</strong> Configuração, monitoramento
+            e otimização de servidores e redes.
+          </li>
+          <li>
+            🔑 <strong>Licenças de Software:</strong> Garantimos conformidade e
+            atualização contínua.
+          </li>
+          <li>
+            📋 <strong>Gestão de Projetos:</strong> Organização e Gestão
+            detalhada com Backlogs completos.
+          </li>
+          <li>
+            🤖 <strong>Contratos Inteligentes:</strong> Tecnologia avançada para
+            automação e segurança.
+          </li>
+          <li>
+            🔩 <strong>Peças e Orçamentos:</strong> Venda de peças e orçamentos
+            personalizados para suas necessidades.
+          </li>
+        </ul>
+        <p>
+          Nossa missão é garantir que sua infraestrutura de TI esteja sempre
+          funcionando de forma eficiente, segura e confiável. Conte conosco para
+          transformar desafios técnicos em soluções ágeis e práticas.
+        </p>
+      </section>
     </main>
     <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log("Service Worker registrado com sucesso!"))
-            .catch(error => console.log("Falha ao registrar o Service Worker:", error));
-        }
-      </script>
-
-      
-
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => console.log("Service Worker registrado com sucesso!"))
+          .catch((error) =>
+            console.log("Falha ao registrar o Service Worker:", error)
+          );
+      }
+    </script>
 
     <footer class="sobre">
-        <ul class="redes-sociais">
-            <li><a href="https://www.instagram.com/wb_recordings/?igsh=YzljYTk1ODg3Zg%3D%3D">Instagram</a></li>
-            <li><a href="https://www.linkedin.com/in/williamoliveiradev/">Linkedin</a></li>
-            <li><a href="./sobrenos.html">Sobre Nós</a></li>
-        </ul>
-        
-        <p>TicketEase &copy; 2025</p>
+      <ul class="redes-sociais">
+        <li>
+          <a
+            href="https://www.instagram.com/wb_recordings/?igsh=YzljYTk1ODg3Zg%3D%3D"
+            >Instagram</a
+          >
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/williamoliveiradev/">Linkedin</a>
+        </li>
+        <li><a href="./sobrenos.html">Sobre Nós</a></li>
+      </ul>
+
+      <p>TicketEase &copy; 2025</p>
     </footer>
-    <div class="footer-container">
-    <a id="promo-left" href="https://autohashmining.com/?ref=INFOCOIN">
-        <img src="https://autohashmining.com/images/autohashmining-468.gif" alt="Promoção Esquerda">
-    </a>
-
-    <a id="promo-right" href="https://autohashmining.com/?ref=INFOCOIN">
-        <img src="https://autohashmining.com/images/autohashmining-468.gif" alt="Promoção Direita">
-    </a>
-</div>
-    
-
-</body>
+  </body>
 </html>
