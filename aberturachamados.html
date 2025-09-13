@@ -40,7 +40,7 @@
                 <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo" autocomplete="name" />
 
                 <label for="motivo">Motivo do Chamado:</label>
-                <select id="motivo" name="motivo" required>
+                <select id="motivo" name="motivo">
                     <option value="">Selecione o motivo</option>
                     <option value="manutencao-computadores">Manutenção de Computadores (Hardware/Software)</option>
                     <option value="instalacao-windows">Instalação/Recuperação de Sistema Windows</option>
@@ -152,18 +152,16 @@ document.getElementById('motivo').addEventListener('change', function() {
 
 document.getElementById('adicionar-servico').addEventListener('click', function() {
     const motivoSelect = document.getElementById('motivo');
-    const motivo = motivoSelect.value;
-    if (!motivo) return alert("Selecione um motivo!");
-    let valor = motivosValores[motivo];
-    let descricao = motivoSelect.options[motivoSelect.selectedIndex].text;
-    if (motivo === "solicitar-orcamento") {
-        descricao += " - " + document.getElementById('orcamento-detalhes').value;
+    const motivoAtual = motivoSelect.value;
+    if (!motivoAtual) {
+        alert("Selecione um item da lista.");
+        return;
     }
-    servicosSelecionados.push({ motivo, descricao, valor });
+    const descricao = motivoSelect.options[motivoSelect.selectedIndex].text;
+    const valor = motivosValores[motivoAtual];
+    servicosSelecionados.push({ motivo: motivoAtual, descricao, valor });
     atualizarListaServicos();
-    motivoSelect.value = "";
-    document.getElementById('valor-servico').innerText = "";
-    document.getElementById('orcamento-extra').style.display = 'none';
+    motivoSelect.value = ""; // Limpa o select após adicionar
 });
 
 let desconto = 0;
@@ -217,31 +215,48 @@ document.getElementById('aplicar-cupom').addEventListener('click', function() {
         // Função para validar o CPF e mostrar mensagem de sucesso
         document.getElementById('chamado-form').addEventListener('submit', function(event) {
             event.preventDefault();
-    if (servicosSelecionados.length === 0) {
-        alert("Adicione pelo menos um serviço!");
+
+    const motivoSelect = document.getElementById('motivo');
+    const motivoAtual = motivoSelect.value;
+    let listaFinalServicos = [...servicosSelecionados]; // Cria uma cópia da lista de serviços já adicionados
+
+    
+    // Verifica se há um serviço válido selecionado no menu que ainda não foi adicionado à lista.
+    // Isso evita adicionar o mesmo item duas vezes se o usuário clicar em "Adicionar" e depois "Enviar".
+    if (motivoAtual && !listaFinalServicos.some(s => s.motivo === motivoAtual)) {
+        const descricao = motivoSelect.options[motivoSelect.selectedIndex].text;
+        const valor = motivosValores[motivoAtual];
+        listaFinalServicos.push({ motivo: motivoAtual, descricao, valor });
+    }
+
+    // A verificação final é feita na lista consolidada.
+    if (listaFinalServicos.length === 0) {
+        alert("Por favor, selecione ao menos um motivo para o chamado.");
         return;
     }
-    // Remova a verificação de login
-    // Salve chamado como anônimo se não houver usuário logado
-    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
-    const data = new Date();
-    let chamado = {
-        servicos: [...servicosSelecionados],
-        descricao: document.getElementById('descricao').value,
-        data: data.toLocaleDateString(),
-        hora: data.toLocaleTimeString(),
-        usuario: usuarioLogado ? usuarioLogado.email : "anônimo"
+
+    // --- A PARTIR DAQUI, A LÓGICA DE ENVIO (EMAILJS) CONTINUA ---
+
+    const templateParams = {
+        nome_cliente: document.getElementById('nome').value,
+        cpf_cliente: document.getElementById('cpf-cnpj').value,
+        email_cliente: document.getElementById('email').value,
+        descricao_chamado: document.getElementById('descricao').value || "Nenhuma descrição fornecida.",
+        // Usa a lista final para montar os dados do email
+        lista_servicos: listaFinalServicos.map(s => s.descricao).join(', '),
+        valor_total: document.getElementById('resumo-servicos').innerText // O valor total já é atualizado pela função `atualizarListaServicos`
     };
-    // Salva chamados anônimos em localStorage
-    let chamados = JSON.parse(localStorage.getItem("chamados_anonimos") || "[]");
-    chamados.push(chamado);
-    localStorage.setItem("chamados_anonimos", JSON.stringify(chamados));
-    alert("Chamado registrado com sucesso!");
+
+    console.log("Enviando chamado com os seguintes dados:", templateParams);
+    alert("Chamado enviado com sucesso! (Simulação)"); // Mantenha o alert até integrarmos o EmailJS
+
+    // Limpa o formulário e a lista de serviços após o envio
     servicosSelecionados = [];
-    atualizarListaServicos();
-    this.reset();
+    atualizarListaServicos(); // Isso vai limpar a UI
+    document.getElementById('chamado-form').reset();
     document.getElementById('valor-servico').innerText = "";
     document.getElementById('orcamento-extra').style.display = 'none';
+    document.getElementById('cupom-container').style.display = 'none';
 });
     </script>
     <script>

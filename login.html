@@ -5,6 +5,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAPwzdzIAJj5IxZRq0iciKIKeg-SylHbF8",
+        authDomain: "database-6d48c.firebaseapp.com",
+        projectId: "database-6d48c",
+        storageBucket: "database-6d48c.firebasestorage.app",
+        messagingSenderId: "1024797114609",
+        appId: "1:1024797114609:web:f1846d6599d9bce265a950"
+      };
+
+      // Inicializa o Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Função para verificar duplicidade
+      async function usuarioDuplicado(email, cpf) {
+        const usuariosRef = collection(db, "usuarios");
+        const qEmail = query(usuariosRef, where("email", "==", email));
+        const qCpf = query(usuariosRef, where("cpf", "==", cpf));
+
+        const emailSnap = await getDocs(qEmail);
+        const cpfSnap = await getDocs(qCpf);
+
+        return !emailSnap.empty || !cpfSnap.empty;
+      }
+
+      // Função para cadastrar usuário
+      async function cadastrarUsuario(dados) {
+        try {
+          await addDoc(collection(db, "usuarios"), dados);
+          alert("Usuário cadastrado com sucesso!");
+        } catch (e) {
+          alert("Erro ao cadastrar usuário: " + e);
+        }
+      }
+
+      // Exemplo de uso: chame ao enviar o formulário de cadastro
+      document.getElementById("cadastro-form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const nome = document.getElementById("cad-nome").value.trim();
+        const email = document.getElementById("cad-email").value.trim().toLowerCase();
+        const telefone = document.getElementById("cad-telefone").value.trim();
+        const cpf = document.getElementById("cad-cpf").value.trim();
+        const senha = document.getElementById("cad-senha").value;
+
+        // Validação de duplicidade
+        if (await usuarioDuplicado(email, cpf)) {
+          alert("Usuário já cadastrado com este email ou CPF!");
+          return;
+        }
+
+        // Hash seguro da senha
+        const senhaHash = CryptoJS.SHA256(senha).toString();
+
+        const dados = { nome, email, telefone, cpf, senha: senhaHash };
+        await cadastrarUsuario(dados);
+        this.reset();
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
     <nav>
@@ -85,28 +148,34 @@
             document.getElementById("voltar-login").click();
         });
         // Login
-        document.getElementById("login-form").addEventListener("submit", function(e) {
-            e.preventDefault();
-            const email = document.getElementById("login-email").value.trim().toLowerCase();
-            const cpf = document.getElementById("login-cpf").value.trim();
-            const senha = document.getElementById("login-senha").value;
-            if (email === "wil.dgl@hotmail.com" && cpf === "39666162680" && senha === "614013") {
-                localStorage.setItem("usuarioLogado", JSON.stringify({ nome: "Administrador", email, cpf, admin: true }));
-                window.location.href = "painel.html";
-                return;
+        document.getElementById("login-form").addEventListener("submit", async function(e) {
+          e.preventDefault();
+          const email = document.getElementById("login-email").value.trim().toLowerCase();
+          const cpf = document.getElementById("login-cpf").value.trim();
+          const senha = document.getElementById("login-senha").value;
+          const senhaHash = CryptoJS.SHA256(senha).toString();
+
+          // Busca o usuário pelo email OU cpf
+          const usuariosRef = collection(db, "usuarios");
+          const q = query(usuariosRef, where("email", "==", email), where("cpf", "==", cpf));
+          const querySnapshot = await getDocs(q);
+
+          let usuarioEncontrado = null;
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            if (data.cpf === cpf && data.senha === senhaHash) {
+              usuarioEncontrado = data;
             }
-            let usuarios = getUsuarios();
-            let usuario = usuarios.find(u => u.email === email && u.cpf === cpf);
-            if (!usuario) {
-                document.getElementById("login-msg").innerText = "Usuário não encontrado!";
-                return;
-            }
-            if (usuario.senha !== senha) {
-                document.getElementById("login-msg").innerText = "Senha incorreta!";
-                return;
-            }
-            localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuario.nome, email, cpf, admin: false }));
+          });
+
+          if (usuarioEncontrado) {
+            alert("Login realizado com sucesso!");
+            // Salve os dados do usuário logado (ex: localStorage) e redirecione para o painel
+            localStorage.setItem("usuarioLogado", JSON.stringify(usuarioEncontrado));
             window.location.href = "painel.html";
+          } else {
+            alert("Usuário ou senha incorretos!");
+          }
         });
         document.getElementById("btn-esqueci").addEventListener("click", function() {
             alert("Em breve você poderá redefinir sua senha por email.");

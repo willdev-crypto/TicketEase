@@ -5,6 +5,80 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAPwzdzIAJj5IxZRq0iciKIKeg-SylHbF8",
+        authDomain: "database-6d48c.firebaseapp.com",
+        projectId: "database-6d48c",
+        storageBucket: "database-6d48c.firebasestorage.app",
+        messagingSenderId: "1024797114609",
+        appId: "1:1024797114609:web:f1846d6599d9bce265a950"
+      };
+
+      // Inicializa o Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Teste: adicionar um documento na coleção "teste"
+      addDoc(collection(db, "teste"), { mensagem: "Firebase conectado!" })
+        .then(() => alert("Firebase conectado com sucesso!"))
+        .catch((e) => alert("Erro ao conectar ao Firebase: " + e));
+
+      // Listar todos os chamados
+      async function listarTodosChamados() {
+        const chamadosRef = collection(db, "chamados");
+        const querySnapshot = await getDocs(chamadosRef);
+
+        let html = "<h2>Todos os Chamados</h2><ul>";
+        querySnapshot.forEach((doc) => {
+          const c = doc.data();
+          html += `<li><strong>Usuário:</strong> ${c.nome} | <strong>Email:</strong> ${c.email} | <strong>Motivo:</strong> ${c.motivo} | <strong>Descrição:</strong> ${c.descricao} | <strong>Data:</strong> ${c.data}</li>`;
+        });
+        html += "</ul>";
+        document.getElementById("painel-content").innerHTML = html;
+      }
+
+      // Listar todos os usuários
+      async function listarTodosUsuarios() {
+        const usuariosRef = collection(db, "usuarios");
+        const querySnapshot = await getDocs(usuariosRef);
+
+        let html = "<h2>Usuários Cadastrados</h2><ul>";
+        querySnapshot.forEach((doc) => {
+          const u = doc.data();
+          html += `<li><strong>Nome:</strong> ${u.nome} | <strong>Email:</strong> ${u.email} | <strong>CPF:</strong> ${u.cpf}</li>`;
+        });
+        html += "</ul>";
+        document.getElementById("usuarios-content").innerHTML = html;
+      }
+
+      // Chame essas funções ao carregar o painel do admin
+      listarTodosChamados();
+      listarTodosUsuarios();
+
+      async function listarChamadosUsuario() {
+        const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+        if (!usuarioLogado) return;
+
+        const chamadosRef = collection(db, "chamados");
+        const q = query(chamadosRef, where("email", "==", usuarioLogado.email));
+        const querySnapshot = await getDocs(q);
+
+        let html = "<h2>Meus Chamados</h2><ul>";
+        querySnapshot.forEach((doc) => {
+          const c = doc.data();
+          html += `<li><strong>Motivo:</strong> ${c.motivo} | <strong>Descrição:</strong> ${c.descricao} | <strong>Data:</strong> ${c.data}</li>`;
+        });
+        html += "</ul>";
+        document.getElementById("painel-content").innerHTML = html;
+      }
+
+      // Chame listarChamadosUsuario() ao carregar o painel do usuário
+      listarChamadosUsuario();
+    </script>
 </head>
 <body>
     <nav>
